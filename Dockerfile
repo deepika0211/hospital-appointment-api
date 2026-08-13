@@ -1,0 +1,25 @@
+FROM python:3.12-slim
+
+WORKDIR /app
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+RUN pip install --no-cache-dir poetry
+
+COPY pyproject.toml poetry.lock ./
+
+RUN poetry config virtualenvs.create false \
+    && poetry install --only main --no-interaction --no-ansi
+
+COPY app ./app
+COPY alembic ./alembic
+COPY alembic.ini ./
+
+COPY entrypoint.sh .
+
+RUN chmod +x entrypoint.sh
+
+EXPOSE 8000
+
+CMD ["./entrypoint.sh"]
