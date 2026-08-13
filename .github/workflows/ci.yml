@@ -68,12 +68,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-- name: Check repository files
-  run: |
-    pwd
-    ls -la
-    find . -maxdepth 2 -iname "*docker*"
+      - name: Check repository files
+        run: |
+          pwd
+          ls -la
+          find . -maxdepth 2 -iname "*docker*"
 
-- name: Build Docker image
-  run: |
-    docker build -f Dockerfile -t hospital-appointment-api .
+      - name: Build Docker image
+        run: |
+          docker build -f Dockerfile -t hospital-appointment-api .
