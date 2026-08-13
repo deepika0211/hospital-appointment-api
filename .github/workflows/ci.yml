@@ -1,0 +1,74 @@
+name: Hospital Appointment API CI/CD
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+
+jobs:
+
+  quality-checks:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+
+      - name: Install Poetry
+        run: |
+          pip install poetry
+
+
+      - name: Install dependencies
+        run: |
+          poetry install
+
+
+      # Gate 1 - Linting
+      - name: Ruff lint
+        run: |
+          poetry run ruff check .
+
+
+      # Gate 2 - Tests + Coverage
+      - name: Run tests
+        run: |
+          poetry run pytest --cov=app --cov-fail-under=85
+
+
+      # Gate 3 - Security
+      - name: Bandit security scan
+        run: |
+          poetry run bandit -r app
+
+
+
+  docker-build:
+
+    needs: quality-checks
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+
+      - name: Build Docker image
+        run: |
+          docker build -t hospital-appointment-api .
