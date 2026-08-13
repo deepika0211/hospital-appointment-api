@@ -1,1 +1,21 @@
-/Dockerfile
+# Python
+__pycache__/
+*.pyc
+
+# Virtual environment
+.venv/
+
+# Database
+*.db
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Environment
+.env
+
+# IDE
+.vscode/
+.idea/
