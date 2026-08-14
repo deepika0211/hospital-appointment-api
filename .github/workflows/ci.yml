@@ -4,62 +4,47 @@ on:
   push:
     branches:
       - main
-
   pull_request:
     branches:
       - main
 
-
 jobs:
 
   quality-checks:
-
     runs-on: ubuntu-latest
 
     steps:
-
       - name: Checkout code
         uses: actions/checkout@v4
-
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
-
       - name: Install Poetry
         run: pip install poetry
-
 
       - name: Install dependencies
         run: poetry install
 
-
       - name: Ruff lint
         run: poetry run ruff check .
 
-
       - name: Run tests
         run: poetry run pytest --cov=app --cov-fail-under=85
-
 
       - name: Bandit security scan
         run: poetry run bandit -r app
 
 
-
   docker-build:
-
     needs: quality-checks
-
     runs-on: ubuntu-latest
 
     steps:
-
       - name: Checkout code
         uses: actions/checkout@v4
-
 
       - name: Check repository files
         run: |
@@ -67,7 +52,6 @@ jobs:
           ls -la
           find . -maxdepth 2 -iname "*docker*"
 
-
       - name: Build Docker image
         run: |
-          docker build -f Dockerfile -t hospital-appointment-api .
+          docker build -t hospital-appointment-api .
