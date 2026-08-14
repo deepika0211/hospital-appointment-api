@@ -29,31 +29,23 @@ jobs:
 
 
       - name: Install Poetry
-        run: |
-          pip install poetry
+        run: pip install poetry
 
 
       - name: Install dependencies
-        run: |
-          poetry install
+        run: poetry install
 
 
-      # Gate 1 - Linting
       - name: Ruff lint
-        run: |
-          poetry run ruff check .
+        run: poetry run ruff check .
 
 
-      # Gate 2 - Tests + Coverage
       - name: Run tests
-        run: |
-          poetry run pytest --cov=app --cov-fail-under=85
+        run: poetry run pytest --cov=app --cov-fail-under=85
 
 
-      # Gate 3 - Security
       - name: Bandit security scan
-        run: |
-          poetry run bandit -r app
+        run: poetry run bandit -r app
 
 
 
@@ -68,11 +60,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+
       - name: Check repository files
         run: |
           pwd
           ls -la
           find . -maxdepth 2 -iname "*docker*"
+
 
       - name: Build Docker image
         run: |
