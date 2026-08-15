@@ -20,3 +20,10 @@ def root():
     return {
         "message": "Hospital Appointment Management API is running"
     }
+
+@app.get("/health")
+def health_check():
+    return {
+        "status": "healthy",
+        "service": "Hospital Appointment API"
+    }
